@@ -3,13 +3,19 @@ import 'package:flutter/material.dart';
 class BottomButton extends StatelessWidget {
   final String title;
   final Icon icon;
+  final void Function()? onPressed;
 
-  const BottomButton({super.key, required this.title, required this.icon});
+  const BottomButton({
+    super.key,
+    required this.title,
+    required this.icon,
+    required this.onPressed,
+  });
 
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      onPressed: () {},
+      onPressed: onPressed,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
