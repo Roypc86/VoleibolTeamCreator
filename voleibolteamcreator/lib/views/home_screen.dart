@@ -1,8 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:voleibolteamcreator/enums/page_enum.dart';
 import 'package:voleibolteamcreator/viewmodels/home_viewmodel.dart';
+import 'package:voleibolteamcreator/viewmodels/players_viewmodel.dart';
 import 'package:voleibolteamcreator/views/players_screen.dart';
 import 'package:voleibolteamcreator/views/teams_screen.dart';
 import 'package:voleibolteamcreator/views/widgets/bottom_button.dart';
@@ -42,7 +42,9 @@ class HomeScreen extends StatelessWidget {
 
   Widget getCurrentPage(PageEnum currentPage) {
     return currentPage == PageEnum.teamsScreen
-        ? TeamsScreen()
-        : PlayersScreen();
+        ? const TeamsScreen()
+        : MultiProvider(providers: [
+            ChangeNotifierProvider(create: (_) => PlayersViewModel())
+          ], child: const PlayersScreen());
   }
 }

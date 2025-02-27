@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:voleibolteamcreator/enums/page_enum.dart';
 
 class HomeViewModel with ChangeNotifier {
-  PageEnum _currentPage = PageEnum.teamsScreen;
+  PageEnum _currentPage = PageEnum.playersScreen;
 
   //Getters
   PageEnum get currentPage => _currentPage;
