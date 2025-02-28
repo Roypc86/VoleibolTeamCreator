@@ -6,81 +6,120 @@ import 'package:voleibolteamcreator/viewmodels/players_viewmodel.dart';
 
 class PlayersScreen extends StatelessWidget {
   const PlayersScreen({super.key});
-
+  static const double nameSizeFactor = 1 / 3;
+  static const double positionSizeFactor = 1 / 4;
+  static const double scoreSizeFactor = 1 / 4;
   @override
   Widget build(BuildContext context) {
     final playersViewModel = Provider.of<PlayersViewModel>(context);
+    final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      body: SizedBox(
+      body: Container(
+        color: Colors.black,
         width: double.infinity,
         height: double.infinity,
         child: SingleChildScrollView(
-            child: DataTable(
-                columns: getColumns(),
-                rows: getRows(playersViewModel.players))),
+            child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15.0),
+          child: DataTable(
+              columnSpacing: 0,
+              horizontalMargin: 0,
+              columns: getColumns(screenWidth),
+              rows: getRows(playersViewModel.players, screenWidth)),
+        )),
       ),
     );
   }
 
-  List<DataColumn> getColumns() {
-    return const [
+  List<DataColumn> getColumns(double screenWidth) {
+    return [
       DataColumn(
-        label: Expanded(
-            child:
-                Text('Nombre', style: TextStyle(fontStyle: FontStyle.italic))),
+        label: SizedBox(
+          width: screenWidth * nameSizeFactor,
+          child: const Text(
+            'Nombre',
+            style: TextStyle(color: Colors.indigoAccent),
+          ),
+        ),
       ),
       DataColumn(
-        label: Expanded(
-            child: Text('Posicion',
-                style: TextStyle(fontStyle: FontStyle.italic))),
+        label: SizedBox(
+          width: screenWidth * positionSizeFactor,
+          child: const Text(
+            'Posicion',
+            style: TextStyle(color: Colors.indigoAccent),
+          ),
+        ),
       ),
       DataColumn(
-        label: Expanded(
-            child:
-                Text('Score', style: TextStyle(fontStyle: FontStyle.italic))),
+        label: SizedBox(
+          width: screenWidth * scoreSizeFactor,
+          child: const Text(
+            'Puntuacion',
+            textAlign: TextAlign.center,
+            style: TextStyle(color: Colors.indigoAccent),
+          ),
+        ),
       ),
     ];
   }
 
-  List<DataRow> getRows(List<Player> players) {
+  List<DataRow> getRows(List<Player> players, double screenWidth) {
     List<DataRow> playersRows = [];
-    int index = 0;
+
     for (Player player in players) {
       playersRows.add(
         DataRow(
-          color: WidgetStateProperty.resolveWith<Color?>(
-              (Set<WidgetState> states) {
-            if (index % 2 == 1) return Colors.grey[200];
-            return null;
-          }),
+          // color: WidgetStateProperty.resolveWith<Color?>(
+          //     (Set<WidgetState> states) {
+          //   if (pIndex % 2 == 1) {
+          //     return Colors.grey[200];
+          //   }
+          //   return Colors.white; // Use the default value.
+          // }),
           cells: [
             DataCell(
-              Text(player.name),
+              SizedBox(
+                width: screenWidth * (1 / 4),
+                child: Text(
+                  player.name,
+                  maxLines: 1,
+                  style: const TextStyle(
+                      color: Colors.white, overflow: TextOverflow.ellipsis),
+                ),
+              ),
             ),
             DataCell(
               Container(
-                  width: 90,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
-                  decoration: BoxDecoration(
-                      border: Border.all(
-                          width: 2, color: getColorByPosition(player.position)),
-                      borderRadius: BorderRadius.circular(15)),
-                  child: Text(
-                    player.position.name.toString(),
-                    style:
-                        TextStyle(color: getColorByPosition(player.position)),
-                    textAlign: TextAlign.center,
-                  )),
+                width: screenWidth * (1 / 4),
+                //padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+                decoration: BoxDecoration(
+                    border: Border.all(
+                        width: 2, color: getColorByPosition(player.position)),
+                    borderRadius: BorderRadius.circular(15)),
+                child: Text(
+                  player.position.name.toString(),
+                  style: TextStyle(
+                      color: getColorByPosition(player.position),
+                      overflow: TextOverflow.ellipsis),
+                  textAlign: TextAlign.center,
+                ),
+              ),
             ),
             DataCell(
-              Text(player.speed.toString()),
+              SizedBox(
+                width: screenWidth * (1 / 4),
+                child: Text(
+                  player.speed.toString(),
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(color: Colors.white),
+                ),
+              ),
             ),
           ],
         ),
       );
-      index++;
     }
     return playersRows;
   }

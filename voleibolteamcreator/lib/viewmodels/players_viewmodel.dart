@@ -6,7 +6,7 @@ class PlayersViewModel extends ChangeNotifier {
   final List<Player> _players = [
     Player(
         id: '1',
-        name: 'Roy Padilla',
+        name: 'Roy Padilla Roy Padilla',
         attack: 1,
         defense: 2,
         serve: 3,
